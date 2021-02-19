@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>订位系统</title>
+</head>
+<body>
+	<!-- 样式 -->
+	<style type="text/css">
+		* {margin: 0; padding: 0;}
+		html{font-size: 100px;}
+		body{font-family: 'Open Sans', sans-serif, '宋体'; font-size: 0.12rem; color: #333333; font-weight: normal;}
+		a{text-decoration: none; color: #333333;}
+		img {border: 0; max-width: 100%; max-height: 100%;}
+		#lbresult{width: 100vw;height: 100vh;text-align: center;}
+		#lbresult img{margin: 0 auto;}
+	</style>
+	<!-- 内容区 -->
+	<div id="lbresult">
+		<img src="./bg.jpg" usemap="#b0a1a239cbf34d64acf4d6798dd67da0" id="bossbar_bgimg" border="0"/>  
+		<map id="b0a1a239cbf34d64acf4d6798dd67da0" name="b0a1a239cbf34d64acf4d6798dd67da0"></map>
+	</div>
+	<!-- js代码 -->
+	<script type="text/javascript">
+		var imgw = 375; //图片宽度 1:1
+		var imgh = 667; //图片高度 1:1
+		var rate = 1;
+		var siteParma = [
+			{name: 'A1', site: '270, 298, 284, 313', type: 'rect'},
+			{name: 'A2', site: '276, 317, 291, 334', type: 'rect'}
+		];
+		var imgobj = document.getElementById('bossbar_bgimg');
+		var mapobj = document.getElementById('b0a1a239cbf34d64acf4d6798dd67da0');
+		//图片加载完成
+		imgobj.onload = function() {
+			initMap();
+		}
+		//初始化地图
+		function initMap() {
+			var nowimgw = imgobj.width;
+			rate = nowimgw / imgw;
+			var html = '';
+			for (var i in siteParma) {
+				html += '<area shape="'+siteParma[i].type+'" coords="'+getNewCoord(siteParma[i].site, rate)+'" href="#" title="'+siteParma[i].name+'"/>'
+			}
+			mapobj.innerHTML = html;
+		}
+		//获取比例坐标
+		function getNewCoord(coord, rate) {
+			var coordstr = '';
+			var coord = coord.split(',');
+			for (var j = 0; j < coord.length; j++) {
+				if (j === 0) {
+					coordstr = coord[j]*rate;
+				} else {
+					coordstr += ',' + coord[j]*rate;
+				}
+			}
+			return coordstr;
+		}
+		//屏幕伸缩响应
+		window.onresize = function() {
+			var nowimgw = imgobj.width;
+			rate = nowimgw / imgw;
+			var element = mapobj.childNodes;  
+            for (var i = 0; i < element.length; i++) {
+                element[i].setAttribute("coords", getNewCoord(siteParma[i].site, rate));  
+            }
+		}
+
+		document.addEventListener("click", function (e) {
+	        console.log(e.clientX, 'x')
+	        console.log(e.clientY, 'y')
+	    });
+	</script>
+</body>
+</html>
