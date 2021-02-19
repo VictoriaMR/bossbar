@@ -19,8 +19,8 @@
 	</style>
 	<!-- 内容区 -->
 	<div id="lbresult">
-		<img src="./bg.jpg" usemap="#b0a1a239cbf34d64acf4d6798dd67da0" id="bossbar_bgimg" border="0"/>  
-		<map id="b0a1a239cbf34d64acf4d6798dd67da0" name="b0a1a239cbf34d64acf4d6798dd67da0"></map>
+		<img src="./bg.jpg" usemap="#map" id="bgimg" border="0"/>  
+		<map id="map" name="map"></map>
 	</div>
 	<!-- js代码 -->
 	<script type="text/javascript">
@@ -31,8 +31,8 @@
 			{name: 'A1', site: '270, 298, 284, 313', type: 'rect'},
 			{name: 'A2', site: '276, 317, 291, 334', type: 'rect'}
 		];
-		var imgobj = document.getElementById('bossbar_bgimg');
-		var mapobj = document.getElementById('b0a1a239cbf34d64acf4d6798dd67da0');
+		var imgobj = document.getElementById('bgimg');
+		var mapobj = document.getElementById('map');
 		//图片加载完成
 		imgobj.onload = function() {
 			initMap();
@@ -43,12 +43,12 @@
 			rate = nowimgw / imgw;
 			var html = '';
 			for (var i in siteParma) {
-				html += '<area shape="'+siteParma[i].type+'" coords="'+getNewCoord(siteParma[i].site, rate)+'" href="#" title="'+siteParma[i].name+'"/>'
+				html += '<area shape="'+siteParma[i].type+'" coords="'+getRateCoord(siteParma[i].site, rate)+'" href="#" title="'+siteParma[i].name+'"/>'
 			}
 			mapobj.innerHTML = html;
 		}
 		//获取比例坐标
-		function getNewCoord(coord, rate) {
+		function getRateCoord(coord, rate) {
 			var coordstr = '';
 			var coord = coord.split(',');
 			for (var j = 0; j < coord.length; j++) {
@@ -66,7 +66,7 @@
 			rate = nowimgw / imgw;
 			var element = mapobj.childNodes;  
             for (var i = 0; i < element.length; i++) {
-                element[i].setAttribute("coords", getNewCoord(siteParma[i].site, rate));  
+                element[i].setAttribute("coords", getRateCoord(siteParma[i].site, rate));  
             }
 		}
 
