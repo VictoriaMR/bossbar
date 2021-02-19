@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>订位系统</title>
+	<script type="text/javascript" src="./jquery.min.js"></script>
+	<script type="text/javascript" src="./jquery.maphilight.js"></script>
 </head>
 <body>
 	<!-- 样式 -->
@@ -13,9 +15,11 @@
 		html{font-size: 100px;}
 		body{font-family: 'Open Sans', sans-serif, '宋体'; font-size: 0.12rem; color: #333333; font-weight: normal;}
 		a{text-decoration: none; color: #333333;}
+		area{outline: none;}
 		img {border: 0; max-width: 100%; max-height: 100%;}
 		#lbresult{width: 100vw;height: 100vh;text-align: center;}
 		#lbresult img{margin: 0 auto;}
+		.center {margin: 0 auto;}
 	</style>
 	<!-- 内容区 -->
 	<div id="lbresult">
@@ -36,6 +40,7 @@
 		//图片加载完成
 		imgobj.onload = function() {
 			initMap();
+			$('#bgimg').maphilight().parent().addClass('center');;
 		}
 		//初始化地图
 		function initMap() {
