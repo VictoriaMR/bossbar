@@ -108,7 +108,7 @@
 			rate = nowimgw / imgw;
 			var html = '';
 			for (var i in siteParma) {
-				html += '<area shape="'+siteParma[i].type+'" coords="'+getRateCoord(siteParma[i].site, rate)+'" href="#" title="'+siteParma[i].name+'"/>'
+				html += '<area shape="'+siteParma[i].type+'" coords="'+getRateCoord(siteParma[i].site, rate)+'" href="javascript:;" title="'+siteParma[i].name+'"/>'
 			}
 			mapobj.innerHTML = html;
 		}
