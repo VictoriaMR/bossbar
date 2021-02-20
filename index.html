@@ -19,7 +19,7 @@
 		img {border: 0; max-width: 100%; max-height: 100%;}
 		#lbresult{width: 100vw;height: 100vh;text-align: center;}
 		#lbresult img{margin: 0 auto;}
-		.center {margin: 0 auto;}
+		div {margin: 0 auto;}
 	</style>
 	<!-- 内容区 -->
 	<div id="lbresult">
@@ -38,14 +38,28 @@
 			{name: 'LV', site: '225, 297, 240, 308', type: 'rect'},
 			{name: '圣罗兰', site: '245, 297, 266, 308', type: 'rect'},
 			{name: 'A1', site: '270, 298, 284, 313', type: 'rect'},
-			{name: 'A2', site: '276, 317, 291, 334', type: 'rect'}
+			{name: 'A2', site: '276, 317, 291, 334', type: 'rect'},
+			{name: 'A3', site: '284, 342, 299, 358', type: 'rect'},
+			{name: 'A5', site: '291, 364, 307, 381', type: 'rect'},
+			{name: 'A6', site: '301, 392, 316, 410', type: 'rect'},
+			{name: 'A8', site: '311, 422, 328, 443', type: 'rect'},
+			{name: 'A9', site: '323, 457, 339, 478', type: 'rect'},
+			{name: 'A10', site: '332, 490, 350, 515', type: 'rect'},
+			{name: 'A11', site: '345, 567, 375, 596', type: 'rect'},
+			{name: 'A12', site: '297, 567, 325, 596', type: 'rect'},
+			{name: 'A13', site: '256, 567, 285, 596', type: 'rect'},
+			{name: 'A15', site: '208, 567, 235, 596', type: 'rect'},
+			{name: 'A16', site: '171, 567, 195, 596', type: 'rect'},
+			{name: 'A18', site: '117, 567, 144, 596', type: 'rect'},
+			{name: 'A19', site: '76, 567, 103, 596', type: 'rect'},
+			{name: 'A20', site: '47, 472, 39, 499, 50, 499, 57, 473', type: 'poly'},
 		];
 		var imgobj = document.getElementById('bgimg');
 		var mapobj = document.getElementById('map');
 		//图片加载完成
 		imgobj.onload = function() {
 			initMap();
-			$('#bgimg').maphilight().parent().addClass('center');;
+			$('#bgimg').maphilight();
 		}
 		//初始化地图
 		function initMap() {
@@ -76,11 +90,11 @@
 			rate = nowimgw / imgw;
 			var element = mapobj.childNodes;  
             for (var i = 0; i < element.length; i++) {
-                element[i].setAttribute("coords", getRateCoord(siteParma[i].site, rate));  
+                element[i].setAttribute('coords', getRateCoord(siteParma[i].site, rate));
             }
 		}
 
-		document.addEventListener("click", function (e) {
+		document.addEventListener('click', function (e) {
 	        console.log(e.clientX, 'x')
 	        console.log(e.clientY, 'y')
 	    });
