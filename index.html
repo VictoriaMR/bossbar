@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0, user-scalable=yes" />
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=3.0, minimum-scale=1.0, user-scalable=yes" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>订位系统</title>
 	<script type="text/javascript" src="./jquery.min.js"></script>
@@ -16,7 +16,7 @@
 		body{font-family: 'Open Sans', sans-serif, '宋体'; font-size: 0.12rem; color: #333333; font-weight: normal;}
 		a{text-decoration: none; color: #333333;}
 		area{outline: none;}
-		img {border: 0; max-width: 100%; max-height: 100%;}
+		img {border: 0; max-width: 100%; max-height: 100%; pointer-events:none;}
 		#lbresult{width: 100vw;height: 100vh;text-align: center;}
 		#lbresult img{margin: 0 auto;}
 		div {margin: 0 auto;}
@@ -94,6 +94,8 @@
 			{name: '处女座', site: '213, 426, 236, 443', type: 'rect'},
 			{name: '白羊座', site: '160, 387, 183, 402', type: 'rect'},
 			{name: '金牛座', site: '190, 387, 212, 402', type: 'rect'},
+			{name: '水瓶座', site: '160, 359, 184, 375', type: 'rect'},
+			{name: '双鱼座', site: '189, 359, 213, 375', type: 'rect'},
 		];
 		var imgobj = document.getElementById('bgimg');
 		var mapobj = document.getElementById('map');
