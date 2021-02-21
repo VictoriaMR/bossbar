@@ -7,12 +7,12 @@
 	<title>订位系统</title>
 	<script type="text/javascript" src="./jquery.min.js"></script>
 	<script type="text/javascript" src="./jquery.maphilight.js"></script>
+	<script type="text/javascript" src="./syalert.js"></script>
 </head>
 <body>
 	<!-- 样式 -->
 	<style type="text/css">
-		* {margin: 0; padding: 0;}
-		html{font-size: 100px;}
+		* {margin: 0; padding: 0;box-sizing:border-box; -moz-box-sizing:border-box; -webkit-box-sizing:border-box;} html{font-size: 100px;}
 		body{font-family: 'Open Sans', sans-serif, '宋体'; font-size: 0.12rem; color: #333333; font-weight: normal;}
 		a{text-decoration: none; color: #333333;}
 		area{outline: none;}
@@ -20,11 +20,65 @@
 		#lbresult{width: 100vw;height: 100vh;text-align: center;}
 		#lbresult img{margin: 0 auto;}
 		div {margin: 0 auto;}
+		.center {text-align: center;}
+		input::placeholder {color: #999; }
+		input:focus {outline:none; }
+		.mb12{margin-bottom: 0.12rem}
+		.btn { color: #fff; border: none; font-size: 15px; margin-bottom: 0; cursor: pointer; padding: 0.05rem 0.1rem;}
+		.btn-cancel {color: #333333}
+		.btn-submit {background: #41bdd7;}
+		/*提醒tips样式*/
+		.sy-mask {width: 100%; height: 100%; position: fixed; background: rgba(0, 0, 0, 0.8); left: 0; top: 0; z-index: 1000 }
+		.sy-alert {position: fixed;background: #fff; overflow: hidden; left: 0; right: 0; margin: 0 auto; z-index: 9999 }
+		.sy-alert.animated {-webkit-animation-duration: .3s; animation-duration: .3s }
+		.sy-alert .sy-title {height: 0.5rem; color: #333; line-height: 0.5rem; font-size: 0.15rem; }
+		.sy-alert.sy-alert-tips {text-align: center; width: 1.5rem; background: rgba(0, 0, 0, 0.7) }
+		.sy-alert.sy-alert-tips .sy-content {padding: 0.08rem; color: #fff; font-size: 0.14rem }
+		.sy-alert.sy-alert-model {width: 3rem;top: calc(50% - 1.5rem);left: calc(50% - 1.5rem);right: calc(50% - 1.5rem);border-radius: 0.04rem}
+		.sy-alert.sy-alert-model .sy-content {text-align: left;padding: 0.1rem }
+		.sy-alert.sy-alert-model .sy-content .form .input-item input {display: block; position: relative; border: 0.01rem solid #eee; padding: 0 0.05rem; height: 0.3rem; line-height: 0.28rem;display: inline-block;width: calc(100% - 0.82rem)}
+		.sy-alert.sy-alert-model .sy-content .form .input-item label {height: 0.3rem;line-height: 0.3rem;width: 0.7rem;text-align: right; padding-right: 0.05rem;font-weight: 600;font-size: 0.14rem;display: inline-block;}
+		.sy-alert.sy-alert-model .sy-alert-top {line-height: 0.35rem;border-bottom: 0.01rem solid #ccc}
+		.sy-alert.sy-alert-model .sy-alert-bottom {border-top: 0.01rem solid #ccc;padding: 0.05rem;text-align: center;}
 	</style>
 	<!-- 内容区 -->
 	<div id="lbresult">
 		<img src="./bg.jpg" usemap="#map" id="bgimg" border="0"/>  
 		<map id="map" name="map"></map>
+	</div>
+	<div class="sy-alert sy-alert-model" id="dingtai" style="display: none;">
+		<div class="sy-alert-top">
+			<h3 class="center">订台信息</h3>
+		</div>
+		<div class="sy-content">
+			<form class="form">
+				<div class="input-item mb12">
+					<label>预定台:</label>
+					<input type="text" name="site_name" readonly="readonly" value="">
+					<input type="hidden" name="site_name" value="">
+				</div>
+				<div class="input-item mb12">
+					<label>客户姓名:</label>
+					<input type="text" name="customer_name" value="">
+				</div>
+				<div class="input-item mb12">
+					<label>客户手机:</label>
+					<input type="text" name="customer_phone" value="">
+				</div>
+				<div class="input-item mb12">
+					<label>预定人:</label>
+					<input type="text" name="reserve_name" value="">
+				</div>
+				<div class="input-item">
+					<label>备注:</label>
+					<input type="text" name="remark" value="">
+				</div>
+			</form>
+		</div>
+		<div class="sy-alert-bottom">
+			<button class="btn btn-cancel" style="margin-right: 0.38rem;">关闭</button>
+			<button class="btn btn-submit">确定</button>
+		</div>
 	</div>
 	<!-- js代码 -->
 	<script type="text/javascript">
@@ -32,52 +86,52 @@
 		var imgh = 667; //图片正常高度
 		var rate = 1;
 		var siteParma = [
-			{name: '香奈儿', site: '94, 297, 111, 308', type: 'rect'},
-			{name: '卡地亚', site: '118, 297, 135, 308', type: 'rect'},
-			{name: '古驰', site: '140, 297, 158, 308', type: 'rect'},
-			{name: 'LV', site: '225, 297, 240, 308', type: 'rect'},
-			{name: '圣罗兰', site: '245, 297, 266, 308', type: 'rect'},
-			{name: 'A1', site: '270, 298, 284, 313', type: 'rect'},
-			{name: 'A2', site: '276, 317, 291, 334', type: 'rect'},
-			{name: 'A3', site: '284, 342, 299, 358', type: 'rect'},
-			{name: 'A5', site: '291, 364, 307, 381', type: 'rect'},
-			{name: 'A6', site: '301, 392, 316, 410', type: 'rect'},
-			{name: 'A8', site: '311, 422, 328, 443', type: 'rect'},
-			{name: 'A9', site: '323, 457, 339, 478', type: 'rect'},
-			{name: 'A10', site: '332, 490, 350, 515', type: 'rect'},
-			{name: 'A11', site: '345, 567, 375, 596', type: 'rect'},
-			{name: 'A12', site: '297, 567, 325, 596', type: 'rect'},
-			{name: 'A13', site: '256, 567, 285, 596', type: 'rect'},
-			{name: 'A15', site: '208, 567, 235, 596', type: 'rect'},
-			{name: 'A16', site: '171, 567, 195, 596', type: 'rect'},
-			{name: 'A18', site: '117, 567, 144, 596', type: 'rect'},
-			{name: 'A19', site: '76, 567, 103, 596', type: 'rect'},
-			{name: 'A20', site: '47, 472, 39, 499, 50, 499, 57, 473', type: 'poly'},
-			{name: 'A21', site: '59, 435, 52, 454, 65, 455, 71, 435', type: 'poly'},
-			{name: 'A22', site: '69, 400, 64, 416, 77, 417, 81, 400', type: 'poly'},
-			{name: 'A23', site: '82, 347, 78, 365, 91, 365, 94, 347', type: 'poly'},
-			{name: 'A25', site: '91, 320, 86, 339, 98, 339, 102, 320', type: 'poly'},
-			{name: 'A26', site: '104, 326, 100, 343, 113, 343, 117, 326', type: 'poly'},
-			{name: 'A28', site: '99, 347, 95, 364, 107, 364, 111, 347', type: 'poly'},
-			{name: 'A29', site: '93, 369, 89, 389, 102, 389, 106, 369', type: 'poly'},
-			{name: 'A30', site: '82, 420, 76, 442, 89, 442, 94, 420', type: 'poly'},
-			{name: 'A31', site: '70, 458, 64, 484, 78, 484, 84, 459', type: 'poly'},
-			{name: 'A32', site: '60, 502, 54, 528, 67, 528, 73, 502', type: 'poly'},
-			{name: 'A33', site: '97, 501, 92, 528, 106, 528, 110, 501', type: 'poly'},
-			{name: 'A35', site: '104, 458, 99, 484, 114, 484, 118, 458', type: 'poly'},
-			{name: 'A36', site: '112, 420, 107, 445, 122, 446, 126, 420', type: 'poly'},
-			{name: 'A38', site: '122, 368, 117, 387, 131, 387, 135, 368', type: 'poly'},
-			{name: 'A39', site: '126, 346, 122, 363, 136, 364, 140, 346', type: 'poly'},
-			{name: 'A50', site: '130, 324, 126, 343, 140, 343, 144, 324', type: 'poly'},
-			{name: 'A51', site: '230, 326, 233, 342, 247, 343, 244, 326', type: 'poly'},
-			{name: 'A52', site: '234, 347, 236, 364, 251, 364, 248, 347', type: 'poly'},
-			{name: 'A53', site: '239, 369, 241, 387, 256, 387, 253, 369', type: 'poly'},
-			{name: 'A55', site: '245, 422, 249, 447, 265, 446, 261, 422', type: 'poly'},
-			{name: 'A56', site: '252, 460, 256, 486, 272, 486, 268, 461', type: 'poly'},
-			{name: 'A58', site: '259, 500, 262, 528, 280, 528, 276, 501', type: 'poly'},
-			{name: 'A59', site: '298, 500, 304, 528, 320, 528, 314, 500', type: 'poly'},
-			{name: 'A60', site: '288, 460, 294, 486, 309, 486, 303, 461', type: 'poly'},
-			{name: 'A61', site: '281, 425, 286, 449, 302, 449, 296, 426', type: 'poly'},
+			{name: '香奈儿', site: '92, 295, 112, 310', type: 'rect'},
+			{name: '卡地亚', site: '116, 295, 137, 310', type: 'rect'},
+			{name: '古驰', site: '139, 295, 159, 310', type: 'rect'},
+			{name: 'LV', site: '224, 295, 241, 310', type: 'rect'},
+			{name: '圣罗兰', site: '244, 295, 266, 310', type: 'rect'},
+			{name: 'A1', site: '267, 298, 271, 314, 286, 314, 281, 298', type: 'poly'},
+			{name: 'A2', site: '273, 316, 278, 334, 294, 334, 287, 316', type: 'poly'},
+			{name: 'A3', site: '281, 340, 285, 359, 303, 359, 297, 340', type: 'poly'},
+			{name: 'A5', site: '288, 363, 293, 383, 310, 382, 303, 363', type: 'poly'},
+			{name: 'A6', site: '298, 390, 303, 413, 321, 413, 314, 390', type: 'poly'},
+			{name: 'A8', site: '309, 420, 315, 444, 333, 444, 325, 420', type: 'poly'},
+			{name: 'A9', site: '319, 455, 326, 480, 344, 480, 335, 455', type: 'poly'},
+			{name: 'A10', site: '329, 489, 337, 518, 356, 518, 347, 489', type: 'poly'},
+			{name: 'A11', site: '343, 568, 350, 596, 375, 596, 369, 568', type: 'poly'},
+			{name: 'A12', site: '294, 568, 299, 596, 328, 596, 321, 568', type: 'poly'},
+			{name: 'A13', site: '255, 568, 260, 596, 288, 596, 282, 568', type: 'poly'},
+			{name: 'A15', site: '207, 568, 208, 597, 237, 597, 235, 568', type: 'poly'},
+			{name: 'A16', site: '171, 568, 169, 597, 197, 597, 198, 568', type: 'poly'},
+			{name: 'A18', site: '118, 568, 114, 597, 142, 597, 145, 568', type: 'poly'},
+			{name: 'A19', site: '78, 568, 72, 597, 100, 597, 105, 568', type: 'poly'},
+			{name: 'A20', site: '46, 471, 38, 500, 52, 501, 59, 472', type: 'poly'},
+			{name: 'A21', site: '58, 434, 52, 457, 66, 458, 72, 434', type: 'poly'},
+			{name: 'A22', site: '68, 399, 62, 418, 77, 419, 83, 399', type: 'poly'},
+			{name: 'A23', site: '82, 346, 76, 366, 91, 367, 96, 346', type: 'poly'},
+			{name: 'A25', site: '91, 319, 84, 340, 99, 341, 104, 319', type: 'poly'},
+			{name: 'A26', site: '104, 325, 99, 344, 113, 344, 117, 325', type: 'poly'},
+			{name: 'A28', site: '99, 346, 94, 365, 108, 366, 113, 346', type: 'poly'},
+			{name: 'A29', site: '93, 368, 88, 389, 102, 389, 107, 368', type: 'poly'},
+			{name: 'A30', site: '81, 417, 75, 443, 89, 445, 95, 419', type: 'poly'},
+			{name: 'A31', site: '70, 457, 64, 485, 79, 485, 85, 458', type: 'poly'},
+			{name: 'A32', site: '59, 500, 52, 530, 68, 531, 75, 502', type: 'poly'},
+			{name: 'A33', site: '97, 501, 91, 529, 106, 529, 112, 501', type: 'poly'},
+			{name: 'A35', site: '104, 458, 99, 485, 114, 486, 119, 458', type: 'poly'},
+			{name: 'A36', site: '112, 420, 107, 446, 122, 447, 126, 420', type: 'poly'},
+			{name: 'A38', site: '122, 368, 117, 388, 132, 388, 136, 368', type: 'poly'},
+			{name: 'A39', site: '126, 346, 122, 365, 137, 366, 141, 346', type: 'poly'},
+			{name: 'A50', site: '130, 324, 126, 345, 141, 345, 145, 324', type: 'poly'},
+			{name: 'A51', site: '230, 325, 233, 343, 247, 344, 244, 325', type: 'poly'},
+			{name: 'A52', site: '234, 346, 236, 365, 251, 365, 248, 346', type: 'poly'},
+			{name: 'A53', site: '239, 368, 241, 388, 256, 388, 253, 368', type: 'poly'},
+			{name: 'A55', site: '245, 421, 249, 448, 265, 448, 261, 421', type: 'poly'},
+			{name: 'A56', site: '252, 459, 256, 487, 272, 487, 268, 459', type: 'poly'},
+			{name: 'A58', site: '258, 500, 262, 529, 280, 529, 276, 501', type: 'poly'},
+			{name: 'A59', site: '298, 500, 304, 529, 321, 529, 315, 500', type: 'poly'},
+			{name: 'A60', site: '288, 459, 294, 487, 310, 487, 304, 460', type: 'poly'},
+			{name: 'A61', site: '281, 424, 286, 450, 302, 450, 296, 425', type: 'poly'},
 			{name: 'A62', site: '266, 369, 270, 388, 286, 388, 281, 369', type: 'poly'},
 			{name: 'A63', site: '261, 346, 265, 365, 281, 365, 277, 346', type: 'poly'},
 			{name: 'A65', site: '257, 325, 261, 344, 276, 344, 272, 324', type: 'poly'},
@@ -96,48 +150,147 @@
 			{name: '金牛座', site: '190, 387, 212, 402', type: 'rect'},
 			{name: '水瓶座', site: '160, 359, 184, 375', type: 'rect'},
 			{name: '双鱼座', site: '189, 359, 213, 375', type: 'rect'},
+			{name: '蹦迪卡1', site: '144, 330, 162, 344', type: 'rect'},
+			{name: '蹦迪卡2', site: '163, 330, 182, 344', type: 'rect'},
+			{name: '蹦迪卡3', site: '193, 330, 211, 344', type: 'rect'},
+			{name: '蹦迪卡5', site: '212, 330, 230, 344', type: 'rect'},
+			{name: '蹦迪卡6', site: '143, 357, 140, 381, 156, 381, 158, 356', type: 'poly'},
+			{name: '蹦迪卡8', site: '140, 383, 136, 409, 154, 409, 156, 383', type: 'poly'},
+			{name: '蹦迪卡9', site: '217, 359, 219, 382, 234, 382, 231, 359', type: 'poly'},
+			{name: '蹦迪卡10', site: '220, 384, 221, 408, 237, 408, 234, 384', type: 'poly'},
+			{name: 'VJ台', site: '9, 563, 1, 592, 49, 592, 56, 563', type: 'poly'},
 		];
-		var imgobj = document.getElementById('bgimg');
-		var mapobj = document.getElementById('map');
+		var clickobj = null;
+		var heightlinedata = {alwaysOn: true, fillColor:"f70000", fillOpacity: 0.4, stroke: true, strokeColor: 'ff0000', strokeOpacity: 1, strokeWidth: 1, fade: true};
+		var siteSelected = {
+			'香奈儿': {site_name: '香奈儿', customer_name: '1234', customer_phone: '13800', reserve_name: '张三', remark: '今晚8点'}
+		};
 		//图片加载完成
-		imgobj.onload = function() {
-			initMap();
-			$('#bgimg').maphilight();
-		}
-		//初始化地图
-		function initMap() {
-			var nowimgw = imgobj.width;
-			rate = nowimgw / imgw;
-			var html = '';
-			for (var i in siteParma) {
-				html += '<area shape="'+siteParma[i].type+'" coords="'+getRateCoord(siteParma[i].site, rate)+'" href="javascript:;" title="'+siteParma[i].name+'"/>'
+		$(function(){
+			var imgobj = document.getElementById('bgimg');
+			var mapobj = document.getElementById('map');
+			//图片加载完成触发
+			$('#bgimg').on('load', function(){
+				initMap();
+				$("#bgimg").maphilight();
+				$("#map area.selected").each(function(){
+					$(this).data('maphilight', heightlinedata).trigger('alwaysOn.maphilight');
+				});
+				//吧台点击事件
+				$("#map area").click(function(event){
+					event.stopPropagation();
+					clickobj = $(this);
+					var data = $(this).data();
+					initAlert($(this), data, $(this).hasClass('selected'));
+				});
+			});
+
+			//屏幕伸缩响应
+			window.onresize = function() {
+				var nowimgw = imgobj.width;
+				rate = nowimgw / imgw;
+				var element = mapobj.childNodes;  
+	            for (var i = 0; i < element.length; i++) {
+	                element[i].setAttribute('coords', getRateCoord(siteParma[i].site, rate));
+	            }
 			}
-			mapobj.innerHTML = html;
-		}
-		//获取比例坐标
-		function getRateCoord(coord, rate) {
-			var coordstr = '';
-			var coord = coord.split(',');
-			for (var j = 0; j < coord.length; j++) {
-				if (j === 0) {
-					coordstr = coord[j]*rate;
-				} else {
-					coordstr += ',' + coord[j]*rate;
+
+			//屏幕外点击事件
+			$('#dingtai').on('click', function(event){
+				event.stopPropagation();
+			});
+			$('body').on('click', function(event){
+				$('.sy-alert.sy-alert-model').hide();
+			});
+			$('.btn-cancel').on('click', function(){
+				$('.sy-alert.sy-alert-model').hide();
+			});
+			//提交事件
+			$('.btn-submit').on('click', function(){
+				var check = true;
+				$(this).parent().parent().find('form input[type="text"]').each(function(){
+					if (this.value === '') {
+						check = false;
+						$(this).focus();
+						syalerttips($(this).prev().text()+'不能为空');
+						return false;
+					}
+				});
+				if (!check) {
+					return false;
 				}
+				//提交接口
+				var data = $(this).parent().parent().find('form').serializeArray();
+				initSelected(data);
+			});
+			//初始化地图
+			function initMap() {
+				var nowimgw = imgobj.width;
+				rate = nowimgw / imgw;
+				var html = '';
+				for (var i in siteParma) {
+					var datastr = '';
+					var selected = '';
+					if (siteSelected[siteParma[i].name]) {
+						selected = 'selected';
+						var data = siteSelected[siteParma[i].name];
+					} else {
+						var data = {site_name: siteParma[i].name, customer_name: '', customer_phone: '', reserve_name: '', remark: ''};
+					}
+					for (var j in data) {
+						datastr += ' data-'+j+'="'+data[j]+'"';
+					}
+					html += '<area class="'+selected+'" shape="'+siteParma[i].type+'" coords="'+getRateCoord(siteParma[i].site, rate)+'" href="javascript:;" title="'+siteParma[i].name+'" '+datastr+' />'
+				}
+				mapobj.innerHTML = html;
 			}
-			return coordstr;
-		}
-		//屏幕伸缩响应
-		window.onresize = function() {
-			var nowimgw = imgobj.width;
-			rate = nowimgw / imgw;
-			var element = mapobj.childNodes;  
-            for (var i = 0; i < element.length; i++) {
-                element[i].setAttribute('coords', getRateCoord(siteParma[i].site, rate));
-            }
-		}
+			//获取比例坐标
+			function getRateCoord(coord, rate) {
+				var coordstr = '';
+				var coord = coord.split(',');
+				for (var j = 0; j < coord.length; j++) {
+					if (j === 0) {
+						coordstr = coord[j]*rate;
+					} else {
+						coordstr += ',' + coord[j]*rate;
+					}
+				}
+				return coordstr;
+			}
+			//初始化弹窗
+			function initAlert(obj, data, selected) {
+				var formobj = $('#dingtai form');
+				formobj.find('input').each(function(){
+					var name = this.name;
+					var text = typeof data[name] === 'undefind' ? '' : data[name];
+					$(this).val(text);
+					$(this).attr('disabled', selected);
+				});
+				$('#dingtai .btn-submit').attr('disabled', selected);
+				syalert.syopen('dingtai');
+			}
+			//弹窗提示
+			function syalerttips(text) {
+				$('.sy-alert-tips').remove();
+		        $('body').append('<div class="sy-alert sy-alert-tips animated" sy-enter="zoomIn" sy-leave="zoomOut" sy-type="tips" sy-mask="false" id="sy-alert-tips"> <div class="sy-content">' + text + '</div> </div>');
+		        syalert.syopen('sy-alert-tips');
+			}
+			//初始化选中
+			function initSelected(data) {
+				if (!clickobj) {
+					return false;
+				}
+				clickobj.addClass('selected');
+				clickobj.data('maphilight', heightlinedata).trigger('alwaysOn.maphilight');
+				for (var i=0; i< data.length;i++) {
+					clickobj.data(data[i].name, data[i].value);
+				}
+				$('.sy-alert.sy-alert-model').hide();
+			}
+		});
 
 		document.addEventListener('click', function (e) {
+
 	        console.log(e.clientX, 'x')
 	        console.log(e.clientY, 'y')
 	    });
