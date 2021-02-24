@@ -43,7 +43,7 @@
 	</style>
 	<!-- 内容区 -->
 	<div id="lbresult">
-		<img src="./bg.jpg" usemap="#map" id="bgimg" border="0"/>  
+		<img data-src="./bg.jpg" usemap="#map" id="bgimg" border="0"/>  
 		<map id="map" name="map"></map>
 	</div>
 	<div class="sy-alert sy-alert-model" id="dingtai" style="display: none;">
@@ -77,100 +77,101 @@
 		</div>
 		<div class="sy-alert-bottom">
 			<button class="btn btn-cancel" style="margin-right: 0.38rem;">关闭</button>
+			<button class="btn btn-close" style="margin-right: 0.38rem;">取消</button>
 			<button class="btn btn-submit">确定</button>
 		</div>
 	</div>
 	<!-- js代码 -->
 	<script type="text/javascript">
-		var imgw = 375; //图片正常宽度
-		var imgh = 667; //图片正常高度
-		var rate = 1;
-		var siteParma = [
-			{name: '香奈儿', site: '92, 295, 112, 310', type: 'rect'},
-			{name: '卡地亚', site: '116, 295, 137, 310', type: 'rect'},
-			{name: '古驰', site: '139, 295, 159, 310', type: 'rect'},
-			{name: 'LV', site: '224, 295, 241, 310', type: 'rect'},
-			{name: '圣罗兰', site: '244, 295, 266, 310', type: 'rect'},
-			{name: 'A1', site: '267, 298, 271, 314, 286, 314, 281, 298', type: 'poly'},
-			{name: 'A2', site: '273, 316, 278, 334, 294, 334, 287, 316', type: 'poly'},
-			{name: 'A3', site: '281, 340, 285, 359, 303, 359, 297, 340', type: 'poly'},
-			{name: 'A5', site: '288, 363, 293, 383, 310, 382, 303, 363', type: 'poly'},
-			{name: 'A6', site: '298, 390, 303, 413, 321, 413, 314, 390', type: 'poly'},
-			{name: 'A8', site: '309, 420, 315, 444, 333, 444, 325, 420', type: 'poly'},
-			{name: 'A9', site: '319, 455, 326, 480, 344, 480, 335, 455', type: 'poly'},
-			{name: 'A10', site: '329, 489, 337, 518, 356, 518, 347, 489', type: 'poly'},
-			{name: 'A11', site: '343, 568, 350, 596, 375, 596, 369, 568', type: 'poly'},
-			{name: 'A12', site: '294, 568, 299, 596, 328, 596, 321, 568', type: 'poly'},
-			{name: 'A13', site: '255, 568, 260, 596, 288, 596, 282, 568', type: 'poly'},
-			{name: 'A15', site: '207, 568, 208, 597, 237, 597, 235, 568', type: 'poly'},
-			{name: 'A16', site: '171, 568, 169, 597, 197, 597, 198, 568', type: 'poly'},
-			{name: 'A18', site: '118, 568, 114, 597, 142, 597, 145, 568', type: 'poly'},
-			{name: 'A19', site: '78, 568, 72, 597, 100, 597, 105, 568', type: 'poly'},
-			{name: 'A20', site: '46, 471, 38, 500, 52, 501, 59, 472', type: 'poly'},
-			{name: 'A21', site: '58, 434, 52, 457, 66, 458, 72, 434', type: 'poly'},
-			{name: 'A22', site: '68, 399, 62, 418, 77, 419, 83, 399', type: 'poly'},
-			{name: 'A23', site: '82, 346, 76, 366, 91, 367, 96, 346', type: 'poly'},
-			{name: 'A25', site: '91, 319, 84, 340, 99, 341, 104, 319', type: 'poly'},
-			{name: 'A26', site: '104, 325, 99, 344, 113, 344, 117, 325', type: 'poly'},
-			{name: 'A28', site: '99, 346, 94, 365, 108, 366, 113, 346', type: 'poly'},
-			{name: 'A29', site: '93, 368, 88, 389, 102, 389, 107, 368', type: 'poly'},
-			{name: 'A30', site: '81, 417, 75, 443, 89, 445, 95, 419', type: 'poly'},
-			{name: 'A31', site: '70, 457, 64, 485, 79, 485, 85, 458', type: 'poly'},
-			{name: 'A32', site: '59, 500, 52, 530, 68, 531, 75, 502', type: 'poly'},
-			{name: 'A33', site: '97, 501, 91, 529, 106, 529, 112, 501', type: 'poly'},
-			{name: 'A35', site: '104, 458, 99, 485, 114, 486, 119, 458', type: 'poly'},
-			{name: 'A36', site: '112, 420, 107, 446, 122, 447, 126, 420', type: 'poly'},
-			{name: 'A38', site: '122, 368, 117, 388, 132, 388, 136, 368', type: 'poly'},
-			{name: 'A39', site: '126, 346, 122, 365, 137, 366, 141, 346', type: 'poly'},
-			{name: 'A50', site: '130, 324, 126, 345, 141, 345, 145, 324', type: 'poly'},
-			{name: 'A51', site: '230, 325, 233, 343, 247, 344, 244, 325', type: 'poly'},
-			{name: 'A52', site: '234, 346, 236, 365, 251, 365, 248, 346', type: 'poly'},
-			{name: 'A53', site: '239, 368, 241, 388, 256, 388, 253, 368', type: 'poly'},
-			{name: 'A55', site: '245, 421, 249, 448, 265, 448, 261, 421', type: 'poly'},
-			{name: 'A56', site: '252, 459, 256, 487, 272, 487, 268, 459', type: 'poly'},
-			{name: 'A58', site: '258, 500, 262, 529, 280, 529, 276, 501', type: 'poly'},
-			{name: 'A59', site: '298, 500, 304, 529, 321, 529, 315, 500', type: 'poly'},
-			{name: 'A60', site: '288, 459, 294, 487, 310, 487, 304, 460', type: 'poly'},
-			{name: 'A61', site: '281, 424, 286, 450, 302, 450, 296, 425', type: 'poly'},
-			{name: 'A62', site: '266, 369, 270, 388, 286, 388, 281, 369', type: 'poly'},
-			{name: 'A63', site: '261, 346, 265, 365, 281, 365, 277, 346', type: 'poly'},
-			{name: 'A65', site: '257, 325, 261, 344, 276, 344, 272, 324', type: 'poly'},
-			{name: '666', site: '210, 507, 237, 529', type: 'rect'},
-			{name: '888', site: '173, 507, 199, 529', type: 'rect'},
-			{name: '999', site: '138, 507, 163, 529', type: 'rect'},
-			{name: '天枰座', site: '134, 468, 156, 485', type: 'rect'},
-			{name: '天蝎座', site: '162, 468, 184, 485', type: 'rect'},
-			{name: '射手座', site: '188, 468, 211, 485', type: 'rect'},
-			{name: '魔羯座', site: '216, 468, 240, 485', type: 'rect'},
-			{name: '双子座', site: '138, 426, 161, 443', type: 'rect'},
-			{name: '巨蟹座', site: '162, 426, 184, 443', type: 'rect'},
-			{name: '狮子座', site: '188, 426, 210, 443', type: 'rect'},
-			{name: '处女座', site: '213, 426, 236, 443', type: 'rect'},
-			{name: '白羊座', site: '160, 387, 183, 402', type: 'rect'},
-			{name: '金牛座', site: '190, 387, 212, 402', type: 'rect'},
-			{name: '水瓶座', site: '160, 359, 184, 375', type: 'rect'},
-			{name: '双鱼座', site: '189, 359, 213, 375', type: 'rect'},
-			{name: '蹦迪卡1', site: '144, 330, 162, 344', type: 'rect'},
-			{name: '蹦迪卡2', site: '163, 330, 182, 344', type: 'rect'},
-			{name: '蹦迪卡3', site: '193, 330, 211, 344', type: 'rect'},
-			{name: '蹦迪卡5', site: '212, 330, 230, 344', type: 'rect'},
-			{name: '蹦迪卡6', site: '143, 357, 140, 381, 156, 381, 158, 356', type: 'poly'},
-			{name: '蹦迪卡8', site: '140, 383, 136, 409, 154, 409, 156, 383', type: 'poly'},
-			{name: '蹦迪卡9', site: '217, 359, 219, 382, 234, 382, 231, 359', type: 'poly'},
-			{name: '蹦迪卡10', site: '220, 384, 221, 408, 237, 408, 234, 384', type: 'poly'},
-			{name: 'VJ台', site: '9, 563, 1, 592, 49, 592, 56, 563', type: 'poly'},
-		];
-		var clickobj = null;
-		var heightlinedata = {alwaysOn: true, fillColor:"f70000", fillOpacity: 0.4, stroke: true, strokeColor: 'ff0000', strokeOpacity: 1, strokeWidth: 1, fade: true};
-		var siteSelected = {
-			'香奈儿': {site_name: '香奈儿', customer_name: '1234', customer_phone: '13800', reserve_name: '张三', remark: '今晚8点'}
-		};
 		//图片加载完成
 		$(function(){
+			var imgw = 375; //图片正常宽度
+			var imgh = 667; //图片正常高度
+			var rate = 1;
+			var siteParma = [
+				{name: '香奈儿', site: '92, 295, 112, 310', type: 'rect'},
+				{name: '卡地亚', site: '116, 295, 137, 310', type: 'rect'},
+				{name: '古驰', site: '139, 295, 159, 310', type: 'rect'},
+				{name: 'LV', site: '224, 295, 241, 310', type: 'rect'},
+				{name: '圣罗兰', site: '244, 295, 266, 310', type: 'rect'},
+				{name: 'A1', site: '267, 298, 271, 314, 286, 314, 281, 298', type: 'poly'},
+				{name: 'A2', site: '273, 316, 278, 334, 294, 334, 287, 316', type: 'poly'},
+				{name: 'A3', site: '281, 340, 285, 359, 303, 359, 297, 340', type: 'poly'},
+				{name: 'A5', site: '288, 363, 293, 383, 310, 382, 303, 363', type: 'poly'},
+				{name: 'A6', site: '298, 390, 303, 413, 321, 413, 314, 390', type: 'poly'},
+				{name: 'A8', site: '309, 420, 315, 444, 333, 444, 325, 420', type: 'poly'},
+				{name: 'A9', site: '319, 455, 326, 480, 344, 480, 335, 455', type: 'poly'},
+				{name: 'A10', site: '329, 489, 337, 518, 356, 518, 347, 489', type: 'poly'},
+				{name: 'A11', site: '343, 568, 350, 596, 375, 596, 369, 568', type: 'poly'},
+				{name: 'A12', site: '294, 568, 299, 596, 328, 596, 321, 568', type: 'poly'},
+				{name: 'A13', site: '255, 568, 260, 596, 288, 596, 282, 568', type: 'poly'},
+				{name: 'A15', site: '207, 568, 208, 597, 237, 597, 235, 568', type: 'poly'},
+				{name: 'A16', site: '171, 568, 169, 597, 197, 597, 198, 568', type: 'poly'},
+				{name: 'A18', site: '118, 568, 114, 597, 142, 597, 145, 568', type: 'poly'},
+				{name: 'A19', site: '78, 568, 72, 597, 100, 597, 105, 568', type: 'poly'},
+				{name: 'A20', site: '46, 471, 38, 500, 52, 501, 59, 472', type: 'poly'},
+				{name: 'A21', site: '58, 434, 52, 457, 66, 458, 72, 434', type: 'poly'},
+				{name: 'A22', site: '68, 399, 62, 418, 77, 419, 83, 399', type: 'poly'},
+				{name: 'A23', site: '82, 346, 76, 366, 91, 367, 96, 346', type: 'poly'},
+				{name: 'A25', site: '91, 319, 84, 340, 99, 341, 104, 319', type: 'poly'},
+				{name: 'A26', site: '104, 325, 99, 344, 113, 344, 117, 325', type: 'poly'},
+				{name: 'A28', site: '99, 346, 94, 365, 108, 366, 113, 346', type: 'poly'},
+				{name: 'A29', site: '93, 368, 88, 389, 102, 389, 107, 368', type: 'poly'},
+				{name: 'A30', site: '81, 417, 75, 443, 89, 445, 95, 419', type: 'poly'},
+				{name: 'A31', site: '70, 457, 64, 485, 79, 485, 85, 458', type: 'poly'},
+				{name: 'A32', site: '59, 500, 52, 530, 68, 531, 75, 502', type: 'poly'},
+				{name: 'A33', site: '97, 501, 91, 529, 106, 529, 112, 501', type: 'poly'},
+				{name: 'A35', site: '104, 458, 99, 485, 114, 486, 119, 458', type: 'poly'},
+				{name: 'A36', site: '112, 420, 107, 446, 122, 447, 126, 420', type: 'poly'},
+				{name: 'A38', site: '122, 368, 117, 388, 132, 388, 136, 368', type: 'poly'},
+				{name: 'A39', site: '126, 346, 122, 365, 137, 366, 141, 346', type: 'poly'},
+				{name: 'A50', site: '130, 324, 126, 345, 141, 345, 145, 324', type: 'poly'},
+				{name: 'A51', site: '230, 325, 233, 343, 247, 344, 244, 325', type: 'poly'},
+				{name: 'A52', site: '234, 346, 236, 365, 251, 365, 248, 346', type: 'poly'},
+				{name: 'A53', site: '239, 368, 241, 388, 256, 388, 253, 368', type: 'poly'},
+				{name: 'A55', site: '245, 421, 249, 448, 265, 448, 261, 421', type: 'poly'},
+				{name: 'A56', site: '252, 459, 256, 487, 272, 487, 268, 459', type: 'poly'},
+				{name: 'A58', site: '258, 500, 262, 529, 280, 529, 276, 501', type: 'poly'},
+				{name: 'A59', site: '298, 500, 304, 529, 321, 529, 315, 500', type: 'poly'},
+				{name: 'A60', site: '288, 459, 294, 487, 310, 487, 304, 460', type: 'poly'},
+				{name: 'A61', site: '281, 424, 286, 450, 302, 450, 296, 425', type: 'poly'},
+				{name: 'A62', site: '266, 369, 270, 388, 286, 388, 281, 369', type: 'poly'},
+				{name: 'A63', site: '261, 346, 265, 365, 281, 365, 277, 346', type: 'poly'},
+				{name: 'A65', site: '257, 325, 261, 344, 276, 344, 272, 324', type: 'poly'},
+				{name: '666', site: '210, 507, 237, 529', type: 'rect'},
+				{name: '888', site: '173, 507, 199, 529', type: 'rect'},
+				{name: '999', site: '138, 507, 163, 529', type: 'rect'},
+				{name: '天枰座', site: '134, 468, 156, 485', type: 'rect'},
+				{name: '天蝎座', site: '162, 468, 184, 485', type: 'rect'},
+				{name: '射手座', site: '188, 468, 211, 485', type: 'rect'},
+				{name: '魔羯座', site: '216, 468, 240, 485', type: 'rect'},
+				{name: '双子座', site: '138, 426, 161, 443', type: 'rect'},
+				{name: '巨蟹座', site: '162, 426, 184, 443', type: 'rect'},
+				{name: '狮子座', site: '188, 426, 210, 443', type: 'rect'},
+				{name: '处女座', site: '213, 426, 236, 443', type: 'rect'},
+				{name: '白羊座', site: '160, 387, 183, 402', type: 'rect'},
+				{name: '金牛座', site: '190, 387, 212, 402', type: 'rect'},
+				{name: '水瓶座', site: '160, 359, 184, 375', type: 'rect'},
+				{name: '双鱼座', site: '189, 359, 213, 375', type: 'rect'},
+				{name: '蹦迪卡1', site: '144, 330, 162, 344', type: 'rect'},
+				{name: '蹦迪卡2', site: '163, 330, 182, 344', type: 'rect'},
+				{name: '蹦迪卡3', site: '193, 330, 211, 344', type: 'rect'},
+				{name: '蹦迪卡5', site: '212, 330, 230, 344', type: 'rect'},
+				{name: '蹦迪卡6', site: '143, 357, 140, 381, 156, 381, 158, 356', type: 'poly'},
+				{name: '蹦迪卡8', site: '140, 383, 136, 409, 154, 409, 156, 383', type: 'poly'},
+				{name: '蹦迪卡9', site: '217, 359, 219, 382, 234, 382, 231, 359', type: 'poly'},
+				{name: '蹦迪卡10', site: '220, 384, 221, 408, 237, 408, 234, 384', type: 'poly'},
+			];
+			var clickobj = null;
+			var heightlinedata = {alwaysOn: true, fillColor:"f70000", fillOpacity: 0.4, stroke: true, strokeColor: 'ff0000', strokeOpacity: 1, strokeWidth: 1, fade: true};
+			var siteSelected = {
+				'香奈儿': {site_name: '香奈儿', customer_name: '1234', customer_phone: '13800', reserve_name: '张三', remark: '今晚8点'}
+			};
 			var imgobj = document.getElementById('bgimg');
 			var mapobj = document.getElementById('map');
+			imgobj.src = imgobj.getAttribute('data-src');
 			//图片加载完成触发
-			$('#bgimg').on('load', function(){
+			imgobj.onload = function() {
 				initMap();
 				$("#bgimg").maphilight();
 				$("#map area.selected").each(function(){
@@ -183,7 +184,7 @@
 					var data = $(this).data();
 					initAlert($(this), data, $(this).hasClass('selected'));
 				});
-			});
+			};
 
 			//屏幕伸缩响应
 			window.onresize = function() {
@@ -223,6 +224,26 @@
 				var data = $(this).parent().parent().find('form').serializeArray();
 				initSelected(data);
 			});
+			$('.btn-close').on('click', function(){
+				var data = clickobj.data();
+				console.log(data)
+				cancelSelected();
+			});
+			function cancelSelected() {
+				clickobj.removeClass('selected');
+				var data = {
+					customer_name: '',
+					customer_phone: '',
+					reserve_name: '',
+					remark: '',
+				};
+				for (var i in data) {
+					clickobj.data(i, data[i]);
+				}
+				clickobj.data('maphilight', {}).trigger('alwaysOn.maphilight');
+				$('.sy-alert.sy-alert-model').hide();
+				return true;
+			}
 			//初始化地图
 			function initMap() {
 				var nowimgw = imgobj.width;
